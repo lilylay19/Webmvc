@@ -2,8 +2,10 @@ package co.istad.lily.a01a1webmvc.controller;
 
 
 import co.istad.lily.a01a1webmvc.dto.CreateProductRequest;
+import co.istad.lily.a01a1webmvc.dto.ProductResponse;
 import co.istad.lily.a01a1webmvc.dto.UpdateProductRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class ProductController {
         log.info("pageName {}, pageSize{}, name {}" , pageNumber,pageSize,name);
         return List.of();
     }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void createProduct(
             @RequestBody CreateProductRequest createProductRequest
@@ -49,12 +51,19 @@ public class ProductController {
 
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{code}")
     public void delete(
             @PathVariable String code
     ){
         log.info("code: {}", code);
     }
+
+   @GetMapping("/{code}")
+ public ProductResponse getProductByCode(@PathVariable String code){
+   log.info("getProductByCode: {}" , code);
+   return null;
+  }
 
 
 }
