@@ -1,5 +1,16 @@
 package co.istad.lily.a01a1webmvc.dto;
 
-public class ProductResponse {
-    String code;
+import lombok.Builder;
+
+import java.math.BigDecimal;
+
+@Builder
+public record ProductResponse(
+        String code,
+        String name,
+        BigDecimal price,
+        Boolean status,
+        String categoryName
+) {
+
 }

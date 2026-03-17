@@ -4,6 +4,8 @@ package co.istad.lily.a01a1webmvc.controller;
 import co.istad.lily.a01a1webmvc.dto.CreateProductRequest;
 import co.istad.lily.a01a1webmvc.dto.ProductResponse;
 import co.istad.lily.a01a1webmvc.dto.UpdateProductRequest;
+import co.istad.lily.a01a1webmvc.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,11 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 @Slf4j
 public class ProductController {
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
     @GetMapping
     public List<CreateProductRequest> getProducts(
             @RequestParam(required = false,defaultValue = "0") int pageNumber,
@@ -23,13 +30,17 @@ public class ProductController {
         log.info("pageName {}, pageSize{}, name {}" , pageNumber,pageSize,name);
         return List.of();
     }
+
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void createProduct(
-            @RequestBody CreateProductRequest createProductRequest
-    ){
-       log.info("createProductRequest: {}", createProductRequest);
+    public ProductResponse createNewProduct(
+           @Valid @RequestBody CreateProductRequest createProductRequest
+    ) {
+        log.info("createProductRequest: {}", createProductRequest);
+        return productService.createNewProduct(createProductRequest);
     }
+
 
     @PutMapping("/{code}")
     public void updateProductByCode(
